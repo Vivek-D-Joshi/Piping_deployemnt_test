@@ -32,9 +32,6 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/bw_backend_piping:${{ github.sha }}
         
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
     - name: SSH to server and execute commands
       uses: appleboy/ssh-action@master
       with:
