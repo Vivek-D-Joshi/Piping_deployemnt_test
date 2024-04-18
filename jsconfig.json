@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"lib": ["dom", "esnext"],
+		"moduleResolution": "node",
+		"noEmit": true,
+		"skipLibCheck": true,
+		"resolveJsonModule": true,
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["src/*"],
+			"controllers/*": ["controllers/*"],
+			"config/*": ["config/*"],
+			"middlewares/*": ["middlewares/*"],
+			"models/*": ["models/*"],
+			"services/*": ["services/*"],
+			"storage/*": ["storage/*"],
+			"utils": ["utils.js"],
+			"views/": ["views/*"]
+		}
+	}
+}

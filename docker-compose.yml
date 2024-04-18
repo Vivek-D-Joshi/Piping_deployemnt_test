@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  piping-db:
+    image: mongo:latest
+    env_file:
+      - .env
+    volumes:
+      - piping-data:/data/db
+    ports:
+      - "27017:27017"
+  
+  piping:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - piping-db
+    env_file:
+      - .env
+
+volumes:
+  piping-data:
+    name: piping-data

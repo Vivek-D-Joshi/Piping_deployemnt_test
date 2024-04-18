@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Login Form</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				text-align: center;
+				margin: 50px auto;
+				max-width: 400px;
+				padding: 20px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			}
+
+			h1 {
+				margin-bottom: 20px;
+			}
+
+			form {
+				display: flex;
+				flex-direction: column;
+			}
+
+			label {
+				margin-bottom: 10px;
+			}
+
+			input {
+				padding: 8px;
+				margin-bottom: 15px;
+				border: 1px solid #ccc;
+				border-radius: 3px;
+			}
+
+			button {
+				padding: 10px 15px;
+				background-color: #007bff;
+				color: #fff;
+				border: none;
+				border-radius: 3px;
+				cursor: pointer;
+			}
+
+			button:hover {
+				background-color: #0056b3;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Login Form</h1>
+		<form id="loginForm">
+			<label for="email">Email:</label>
+			<input type="text" id="email" name="email" required />
+
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password" required />
+
+			<button type="button" onclick="login()">Login</button>
+		</form>
+		<script>
+			async function login() {
+				const form = document.getElementById("loginForm");
+				const email = form.elements.email.value;
+				const password = form.elements.password.value;
+				const urlParams = new URLSearchParams(window.location.search);
+				const token = urlParams.get("token");
+				const loginUrl = "/Auth/v1.0/oauth2/login";
+				const loginBody = { email, password };
+				fetch(loginUrl, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(loginBody),
+				})
+					.then((response) => response.json())
+					.then(async (response) => {
+						if (response?.success) {
+							const url = "/Auth/v1.0/oauth2/authorize" + window.location.search;
+							let authResp = await fetch(url, {
+								method: "GET",
+								headers: {
+									"Content-Type": "application/json",
+									Authorization: `Bearer ${response.authToken}`,
+								},
+							});
+							const data = await authResp.json();
+							await window.location.replace(data?.redirectURL);
+						} else {
+							alert("Login failed");
+						}
+					})
+					.catch((error) => {});
+			}
+		</script>
+	</body>
+</html>
