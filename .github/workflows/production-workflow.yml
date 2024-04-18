@@ -42,6 +42,6 @@ jobs:
           cd dockertest
           touch .env
           echo "${{secrets.PROD_ENV_FILE}}" >> .env
-          docker-compose -f ./docker-compose.yml down
-          docker pull ${{ secrets.DOCKER_USERNAME }}/bw_backend_piping:${{ github.sha }}
-          docker-compose -f ./docker-compose.yml up -d
+          sudo docker-compose -f ./docker-compose.yml down
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bw_backend_piping:${{ github.sha }}
+          sudo docker-compose -f ./docker-compose.yml up -d
