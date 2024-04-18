@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -30,7 +30,7 @@ jobs:
         context: .  # Path to the directory containing docker-compose.yml
         platforms: linux/amd64  # Adjust platforms as needed
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/bw_backend_piping:${{ github.sha }}
+        tags: ${{ secrets.DOCKER_USERNAME }}/bw_backend_piping:latest
         
     - name: SSH to server and execute commands
       uses: appleboy/ssh-action@master
@@ -43,5 +43,6 @@ jobs:
           touch .env
           echo "${{secrets.PROD_ENV_FILE}}" >> .env
           sudo docker-compose -f ./docker-compose.yml down
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bw_backend_piping:${{ github.sha }}
+          sudo docker image rm ${{ secrets.DOCKER_USERNAME }}/bw_backend_piping:latest
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bw_backend_piping:latest
           sudo docker-compose -f ./docker-compose.yml up -d
