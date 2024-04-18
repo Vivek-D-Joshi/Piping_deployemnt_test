@@ -23,7 +23,6 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .  # Path to the directory containing docker-compose.yml
-        file: docker-compose.yml  # Path to your docker-compose.yml
         platforms: linux/amd64  # Adjust platforms as needed
         push: true
         tags: vivekdjoshi/bw_backend_piping:${{ github.sha }}
