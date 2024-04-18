@@ -6,15 +6,18 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
     - run: |
         touch .env
         echo "${{secrets.PROD_ENV_FILE}}" >> .env
+      
+    - name: Docker login
+      run: |
+        docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
@@ -29,14 +32,17 @@ jobs:
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
-
-    - name: SSH to server and execute commands
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SERVER_SSH_KEY }}
-        script: |
-          docker-compose -f ./docker-compose.yml down
-          docker-compose -f ./docker-compose.yml pull
-          docker-compose -f ./docker-compose.yml up -d
+        
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: SSH to server and execute commands
+  #     uses: appleboy/ssh-action@master
+  #     with:
+  #       host: ${{ secrets.SERVER_HOST }}
+  #       username: ${{ secrets.SERVER_USERNAME }}
+  #       key: ${{ secrets.SERVER_SSH_KEY }}
+  #       script: |
+  #         docker-compose -f ./docker-compose.yml down
+  #         docker-compose -f ./docker-compose.yml pull
+  #         docker-compose -f ./docker-compose.yml up -d
