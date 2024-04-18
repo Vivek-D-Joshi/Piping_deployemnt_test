@@ -26,7 +26,7 @@ jobs:
         push: true
         tags: vivekdjoshi/bw_backend_piping:${{ github.sha }}
       env:
-        DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKER_USERNAME: vivekdjoshi
         DOCKER_PASSWORD: TechDocker@123#
         
   # deploy:
