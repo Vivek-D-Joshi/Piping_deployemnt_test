@@ -44,5 +44,6 @@ jobs:
           echo "${{secrets.PROD_ENV_FILE}}" >> .env
           sudo docker-compose -f ./docker-compose.yml down
           sudo docker image rm ${{ secrets.DOCKER_USERNAME }}/bw_backend_piping:latest
+          sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bw_backend_piping:latest
           sudo docker-compose -f ./docker-compose.yml up -d
