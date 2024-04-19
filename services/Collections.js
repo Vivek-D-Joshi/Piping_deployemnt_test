@@ -1,5 +1,5 @@
 const { CollectionModel } = require("../models/Collections");
-
+//model
 module.exports = function () {
 	return {
 		find: (query, projection) => CollectionModel.find(query, projection).exec(),
