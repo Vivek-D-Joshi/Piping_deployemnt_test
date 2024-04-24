@@ -2,7 +2,7 @@ services:
   piping-db:
     image: mongo:latest
     env_file:
-      - .env
+      - docker.env
     volumes:
       - piping-data:/data/db
     ports:
