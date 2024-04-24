@@ -18,6 +18,7 @@ module.exports.routes = function (props) {
 					const _id = req.params.id;
 					const query = { _id };
 					const data = await Collections.findOne(query);
+					
 					if (!data) {
 						return res.status(400).json({
 							success: false,
